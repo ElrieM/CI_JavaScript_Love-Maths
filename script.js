@@ -2,7 +2,14 @@
 // Get the button elements, and add event listeners to them
 
 document.addEventListener("DOMContentLoaded", function() {
+    
     let buttons = document.getElementsByTagName('button');
+
+    document.getElementById('answer-box').addEventListener('keydown', function(event){
+        if (event.key === 'Enter') {
+            checkAnswer();
+        }
+    })
 
     for (let button of buttons) {
         button.addEventListener('click', function() {
@@ -14,6 +21,7 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         });
     }
+
     runGame('addition');
 });
 
@@ -25,6 +33,9 @@ function runGame(gameType) {
     // Generate two random numbers between 1 and 25
     // Math.floor rounds down to the whole number
     // Math.random generates random numbers
+
+    document.getElementById('answer-box').value=""; // Erases the last typed answer
+    document.getElementById('answer-box').focus(); // Puts the cursor in the answer box
 
     let num1 = Math.floor(Math.random() * 25) + 1;
     let num2 = Math.floor(Math.random() * 25) + 1;
@@ -51,8 +62,8 @@ function runGame(gameType) {
 function checkAnswer() {
 
     let userAnswer = parseInt(document.getElementById('answer-box').value);
-    let calculatedAnswer = calculateCorrectAnswer();
-    let isCorrect = userAnswer === calculatedAnswer[0];
+    let calculatedAnswer = calculateCorrectAnswer(); // calculatedAnswer is an array
+    let isCorrect = userAnswer === calculatedAnswer[0]; // isCorrect has a true or false value
 
     if (isCorrect) {
         alert("Hey! You got it right! :D");
@@ -74,12 +85,12 @@ function calculateCorrectAnswer() {
     let operand2 = parseInt(document.getElementById('operand2').innerText);
     let operator = document.getElementById('operator').innerText;
 
-    if (operator === '+') {
-        return [operand1 + operand2, 'addition'];
-    } else if (operator === 'x') {
-        return [operand1 * operand2, 'multiply'];
-    } else if (operator === '-') {
-        return [operand1 - operand2, 'subtract'];
+    if (operator === '+') { // This is the addition game
+        return [operand1 + operand2, 'addition']; // return an array containing the correct answer and game type
+    } else if (operator === 'x') {// This is the multiplication game
+        return [operand1 * operand2, 'multiply']; // return an array containing the correct answer and game type
+    } else if (operator === '-') { // This is the subtraction game
+        return [operand1 - operand2, 'subtract'];// return an array containing the correct answer and game type
     } else {
         alert(`Unimplemented operator ${operator}`);
         throw `Unimplemented operator ${operator}, aborting!`;
@@ -87,7 +98,6 @@ function calculateCorrectAnswer() {
 }
 
 function incrementScore() {
-
     // Gets the current score from the DOM and increments it
 
     let oldScore = parseInt(document.getElementById('score').innerText);
@@ -96,7 +106,6 @@ function incrementScore() {
 }
 
 function incrementWrongAnswer() {
-
     // Gets the tally of incorrect answers from the DOM and increments it
 
     let oldScore = parseInt(document.getElementById('incorrect').innerText);
@@ -104,8 +113,9 @@ function incrementWrongAnswer() {
 
 }
 
-function displayAdditionQuestion(operand1, operand2) {
+// Displays the questions.
 
+function displayAdditionQuestion(operand1, operand2) {
     document.getElementById('operand1').textContent = operand1;
     document.getElementById('operand2').textContent = operand2;
     document.getElementById('operator').textContent = "+";
